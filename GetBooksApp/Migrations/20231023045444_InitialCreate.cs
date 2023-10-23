@@ -23,6 +23,22 @@ namespace GetBooksApp.Migrations
                 {
                     table.PrimaryKey("PK_BookModels", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "UserModels",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModels", x => x.UserId);
+                });
         }
 
         /// <inheritdoc />
@@ -30,6 +46,9 @@ namespace GetBooksApp.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BookModels");
+
+            migrationBuilder.DropTable(
+                name: "UserModels");
         }
     }
 }

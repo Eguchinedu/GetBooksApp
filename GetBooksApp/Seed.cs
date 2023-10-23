@@ -1,21 +1,22 @@
 ﻿using GetBooksApp.Data;
 using GetBooksApp.Models;
+using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace GetBooksApp
 {
     public class Seed
     {
-        private readonly DataContext dataContext;
+        private readonly DataContext _dataContext;
 
         public Seed(DataContext context)
         {
-            this.dataContext = context;
+            _dataContext = context;
         }
 
         public void SeedDataContext()
         {
-            if (!dataContext.BookModels.Any())
+            if (!_dataContext.BookModels.Any())
             {
                 var books = new List<BookModel>()
                 {
@@ -35,8 +36,40 @@ namespace GetBooksApp
                       Author = "Emechta Buchi"
                 }
                  };
-                dataContext.BookModels.AddRange(books);
-                dataContext.SaveChanges();
+                _dataContext.BookModels.AddRange(books);
+                _dataContext.SaveChanges();
+            }
+            if (!_dataContext.UserModels.Any())
+            {
+                var users = new List<UserModel>()
+                {
+                    new UserModel()
+                    {
+                        FirstName = "Egu",
+                        LastName = "Chinedu",
+                        UserName = "EguChinedu",
+                        Password = "password",
+
+                    },
+                    new UserModel()
+                    {
+                        FirstName = "Zeus",
+                        LastName = "egu",
+                        UserName = "zeus_egu",
+                        Password = "password"
+
+                    },
+                    new UserModel()
+                    {
+                        FirstName = "Hades",
+                        LastName = "Orion",
+                        UserName = "hades_orion",
+                        Password = "password"
+
+                    },
+                };
+                _dataContext.UserModels.AddRange(users);
+                _dataContext.SaveChanges();
             }
         }
     }

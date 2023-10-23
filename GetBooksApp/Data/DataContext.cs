@@ -12,5 +12,7 @@ namespace GetBooksApp.Data
 
         public DbSet<BookModel> BookModels { get; set; }
 
+        public DbSet<UserModel> UserModels { get; set; }
+
     }
 }

@@ -2,11 +2,13 @@
 using GetBooksApp.Dtos;
 using GetBooksApp.Interfaces;
 using GetBooksApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GetBooksApp.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class BookController : Controller
     {

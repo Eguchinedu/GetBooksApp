@@ -17,6 +17,14 @@ namespace GetBooksApp.Helper
 
             //for when updating or creating
             CreateMap<BookForCreationDto, BookModel>();
+
+            CreateMap<UserModel, UserDto>();
+
+            CreateMap<UserDto, UserModel>();
+
+            CreateMap<UserModel, UserForCreationDto>();
+
+            CreateMap<UserForCreationDto, UserModel>();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace GetBooksApp.Repository
 
         public bool CreateBook(BookModel book)
         {
-            _context.Add(book);
+            _context.BookModels.Add(book);
 
 
             return Save();
@@ -28,7 +28,7 @@ namespace GetBooksApp.Repository
 
         public bool DeleteBook(BookModel id)
         {
-            _context.Remove(id);
+            _context.BookModels.Remove(id);
 
             return Save();
         }
