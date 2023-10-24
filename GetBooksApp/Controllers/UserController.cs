@@ -14,11 +14,13 @@ namespace GetBooksApp.Controllers
     {
         private readonly IUserData _userData;
         private readonly IMapper _mapper;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserController(IUserData userData, IMapper mapper)
+        public UserController(IUserData userData, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _userData = userData ?? throw new ArgumentNullException(nameof(userData));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
         [HttpGet]
@@ -36,7 +38,7 @@ namespace GetBooksApp.Controllers
             return Ok(users);
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
@@ -58,6 +60,7 @@ namespace GetBooksApp.Controllers
             {
                 return BadRequest(ModelState);
             }
+            userCreate.Password = _passwordHasher.Hash(userCreate.Password);
 
             var userMap = _mapper.Map<UserModel>(userCreate);
 

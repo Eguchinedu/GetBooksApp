@@ -9,13 +9,13 @@ using System.Text;
 
 namespace GetBooksApp.Controllers
 {
-    [Route("api/authentication")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly IUserData _userData;
-
+        private readonly IPasswordHasher _passwordHasher;
 
 
         public class AuthenticationRequestBody
@@ -24,14 +24,15 @@ namespace GetBooksApp.Controllers
             public string? Password { get; set; }
         }
 
-        public AuthenticationController(IConfiguration configuration, IUserData userData)
+        public AuthenticationController(IConfiguration configuration, IUserData userData, IPasswordHasher passwordHasher)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _userData = userData ?? throw new ArgumentNullException(nameof(userData));
+            _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
         }
 
 
-        [HttpPost("authenticate")]
+        [HttpPost("login")]
         public ActionResult<string> Authenticate(AuthenticationRequestBody authenticationRequestBody)
         {
             if (authenticationRequestBody.UserName == null || authenticationRequestBody.Password == null)
@@ -72,10 +73,15 @@ namespace GetBooksApp.Controllers
 
         }
 
-        private UserModel ValidateUserCredentials(string? userName, string? password)
+        private UserModel? ValidateUserCredentials(string? userName, string? password)
         {
-            var user = _userData.GetUsers().Where(p => p.UserName == userName && p.Password == password).FirstOrDefault();
+            var user = _userData.GetUsers()
+       .FirstOrDefault(u => u.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase));
 
+            if (user == null || !_passwordHasher.Verify(user.Password, password))
+            {
+                return null;
+            }
 
 
             return user;
